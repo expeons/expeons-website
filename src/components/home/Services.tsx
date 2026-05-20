@@ -45,10 +45,10 @@ export function Services() {
                 key={service.title}
                 variants={animatedItemVariants}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group bg-white border border-neutral-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg hover:border-l-2 hover:border-l-brand-purple transition-all duration-200"
+                className="group bg-white border border-neutral-200 rounded-3xl p-6 cursor-pointer hover:shadow-lg hover:border-l-2 hover:border-l-brand-purple transition-all duration-200"
               >
-                <div className="w-10 h-10 bg-brand-purple-light rounded-xl flex items-center justify-center mb-4">
-                  <Icon size={18} className="text-brand-purple" />
+                <div className="mb-4 text-brand-purple">
+                  <Icon size={28} />
                 </div>
                 <h3 className="font-heading font-semibold text-lg text-brand-navy mb-2 leading-snug">{service.title}</h3>
                 <p className="font-body text-sm text-neutral-500 leading-relaxed">{service.description}</p>

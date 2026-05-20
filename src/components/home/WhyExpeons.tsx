@@ -56,10 +56,10 @@ export function WhyExpeons() {
               <motion.div
                 key={pillar.title}
                 variants={animatedItemVariants}
-                className="bg-white rounded-2xl p-8 border border-neutral-200"
+                className="bg-white rounded-3xl p-8 border border-neutral-200"
               >
-                <div className="w-10 h-10 bg-brand-purple-light rounded-xl flex items-center justify-center mb-5">
-                  <Icon size={18} className="text-brand-purple" />
+                <div className="mb-5 text-brand-purple">
+                  <Icon size={28} />
                 </div>
                 <h3 className="font-heading font-semibold text-xl text-brand-navy mb-3">{pillar.title}</h3>
                 <p className="font-body text-base text-neutral-500 leading-relaxed">{pillar.body}</p>

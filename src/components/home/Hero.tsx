@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
@@ -314,6 +312,37 @@ function NavLink({ children, to, gradient }: NavLinkProps) {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Capability detection — runs once, synchronously, before any rendering
+// ---------------------------------------------------------------------------
+function detectCapability(): "full" | "low" | "none" {
+  // 1. Check WebGL support
+  try {
+    const testCanvas = document.createElement("canvas")
+    const gl =
+      testCanvas.getContext("webgl") ||
+      testCanvas.getContext("experimental-webgl")
+    if (!gl) return "none"
+  } catch {
+    return "none"
+  }
+
+  // 2. Heuristic: low-end device detection
+  //    navigator.hardwareConcurrency  = logical CPU cores (missing on old browsers → 0)
+  //    navigator.deviceMemory         = RAM in GB (Chrome only, missing elsewhere → undefined)
+  const cores = navigator.hardwareConcurrency ?? 0
+  const ram = (navigator as { deviceMemory?: number }).deviceMemory ?? 8
+
+  // Touch-only + few cores = mobile / tablet
+  const isTouchOnly = window.matchMedia("(pointer: coarse)").matches
+
+  if (cores <= 2 || ram <= 2 || (isTouchOnly && cores <= 4)) {
+    return "low"
+  }
+
+  return "full"
+}
+
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroTextRef = useRef<HTMLDivElement>(null)
@@ -330,6 +359,13 @@ export function Hero() {
   const intensityLocationRef = useRef<WebGLUniformLocation | null>(null)
   const startTimeRef = useRef<number>(Date.now())
   const globalIntensityRef = useRef<number>(1.0)
+
+  // Detect once on mount — determines which background path to render
+  const [capability] = useState<"full" | "low" | "none">(() => {
+    // During SSR there's no window — default to full and let client decide
+    if (typeof window === "undefined") return "full"
+    return detectCapability()
+  })
 
   // Map to core Expeons process engineering services
   const navLinks = [
@@ -358,7 +394,7 @@ export function Hero() {
     return shader
   }
 
-  const initGL = () => {
+  const initGL = (): (() => void) | undefined => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -406,21 +442,31 @@ export function Hero() {
     const intensityLocation = gl.getUniformLocation(program, "u_intensity")
     intensityLocationRef.current = intensityLocation
 
-    // Resize canvas — debounced to avoid flash during rapid resize events
+    // Immediately size the canvas on first load — no debounce here,
+    // a delayed first resize causes the shader to render into wrong dimensions
+    // producing the blocky/pixelated grid artifact.
+    const applyCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect()
+      // Cap pixel ratio at 2 to avoid over-rendering on high-DPI mobile devices
+      const dpr = Math.min(window.devicePixelRatio, 2)
+      canvas.width = Math.floor(rect.width * dpr)
+      canvas.height = Math.floor(rect.height * dpr)
+      gl.viewport(0, 0, canvas.width, canvas.height)
+    }
+
+    // Apply immediately so the first rendered frame has correct dimensions
+    applyCanvasSize()
+
+    // Also re-apply after a brief tick in case the layout shifts after mount
+    const initTimer = setTimeout(applyCanvasSize, 100)
+
+    // Debounce only subsequent window resize events
     let resizeTimer: ReturnType<typeof setTimeout>
     const resizeCanvas = () => {
       clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(() => {
-        const rect = canvas.getBoundingClientRect()
-        // Cap pixel ratio at 2 to avoid over-rendering on high-DPI mobile devices
-        const dpr = Math.min(window.devicePixelRatio, 2)
-        canvas.width = rect.width * dpr
-        canvas.height = rect.height * dpr
-        gl.viewport(0, 0, canvas.width, canvas.height)
-      }, 50)
+      resizeTimer = setTimeout(applyCanvasSize, 50)
     }
 
-    resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
 
     // Mouse tracking
@@ -447,13 +493,26 @@ export function Hero() {
     }
 
     canvas.addEventListener("mousemove", handleMouseMove)
+
+    // Return cleanup so the useEffect can remove listeners on unmount
+    return () => {
+      clearTimeout(initTimer)
+      clearTimeout(resizeTimer)
+      window.removeEventListener("resize", resizeCanvas)
+      canvas.removeEventListener("mousemove", handleMouseMove)
+    }
   }
 
   useEffect(() => {
-    initGL()
+    // Don't attempt WebGL on low-end or unsupported devices
+    if (capability !== "full") return
+
+    let cleanupGL = initGL()
 
     let animationFrameId: number
     let lastFrameTime = 0
+    let isPaused = false
+
     // On mobile, cap to ~30fps to reduce GPU pressure and prevent stuttering
     const isMobile = window.matchMedia("(max-width: 768px)").matches
     const targetInterval = isMobile ? 1000 / 30 : 1000 / 60
@@ -461,12 +520,19 @@ export function Hero() {
     const animateFrame = (timestamp: number) => {
       animationFrameId = requestAnimationFrame(animateFrame)
 
+      // Skip rendering while tab is hidden — prevents GPU pressure buildup
+      // that leads to the browser forcibly losing the WebGL context
+      if (isPaused) return
+
       const elapsed = timestamp - lastFrameTime
       if (elapsed < targetInterval) return
       lastFrameTime = timestamp - (elapsed % targetInterval)
 
-      const time = (Date.now() - startTimeRef.current) * 0.001
       const gl = glRef.current
+      // Guard: if context is lost, skip the draw call (avoid WebGL errors)
+      if (!gl || gl.isContextLost()) return
+
+      const time = (Date.now() - startTimeRef.current) * 0.001
       const program = programRef.current
       const buffer = bufferRef.current
       const positionLocation = positionLocationRef.current
@@ -475,7 +541,7 @@ export function Hero() {
       const mouseLocation = mouseLocationRef.current
       const intensityLocation = intensityLocationRef.current
 
-      if (gl && program && buffer && timeLocation && resolutionLocation && mouseLocation && intensityLocation) {
+      if (program && buffer && timeLocation && resolutionLocation && mouseLocation && intensityLocation) {
         gl.useProgram(program)
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
         gl.enableVertexAttribArray(positionLocation)
@@ -492,22 +558,72 @@ export function Hero() {
 
     animationFrameId = requestAnimationFrame(animateFrame)
 
+    // Pause animation when tab is hidden to reduce GPU pressure
+    const handleVisibilityChange = () => {
+      isPaused = document.hidden
+      if (!document.hidden) {
+        // Reset frame timer so there's no huge elapsed jump after resuming
+        lastFrameTime = 0
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    // Handle WebGL context loss — fires when browser reclaims the GPU context
+    const canvas = canvasRef.current
+    const handleContextLost = (e: Event) => {
+      e.preventDefault() // Required: tells the browser we'll handle restoration
+      console.warn("WebGL context lost — will restore on next visibility")
+    }
+
+    // Handle WebGL context restoration — reinitialize all GL state
+    const handleContextRestored = () => {
+      console.info("WebGL context restored — reinitializing")
+      // Clean up old listeners before reinit
+      cleanupGL?.()
+      // Wipe stale GL refs so initGL starts fresh
+      glRef.current = null
+      programRef.current = null
+      bufferRef.current = null
+      // Reinitialize the full GL pipeline
+      cleanupGL = initGL()
+      // Reset time so animation continues smoothly from where it left off
+      lastFrameTime = 0
+    }
+
+    canvas?.addEventListener("webglcontextlost", handleContextLost)
+    canvas?.addEventListener("webglcontextrestored", handleContextRestored)
+
     return () => {
       cancelAnimationFrame(animationFrameId)
+      cleanupGL?.()
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+      canvas?.removeEventListener("webglcontextlost", handleContextLost)
+      canvas?.removeEventListener("webglcontextrestored", handleContextRestored)
     }
   }, [])
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-brand-navy">
-      {/* will-change + transform promote canvas to its own GPU layer, preventing composite thrashing */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ background: "#050612", willChange: "transform", transform: "translateZ(0)" }}
-      />
-      
-      {/* Mobile overlay — static gradient, NO backdrop-blur (blur over animating WebGL causes severe GPU composite thrashing) */}
-      <div className="absolute inset-0 lg:hidden pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(5,6,18,0.55) 0%, rgba(5,6,18,0.35) 50%, rgba(5,6,18,0.6) 100%)" }} />
+
+      {/* ── FULL capability: WebGL shader canvas ── */}
+      {capability === "full" && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ background: "#050612", willChange: "transform", transform: "translateZ(0)" }}
+        />
+      )}
+
+      {/* ── LOW / NONE capability: pure-CSS animated gradient fallback ── */}
+      {/* Zero GPU shader cost — static CSS gradient fallback */}
+      {(capability === "low" || capability === "none") && (
+        <div className="absolute inset-0 hero-gradient" />
+      )}
+
+      {/* Mobile overlay — static gradient, no backdrop-blur */}
+      {capability === "full" && (
+        <div className="absolute inset-0 lg:hidden pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(5,6,18,0.55) 0%, rgba(5,6,18,0.35) 50%, rgba(5,6,18,0.6) 100%)" }} />
+      )}
 
       <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-12 lg:p-16">
         <div ref={heroTextRef} className="text-left flex flex-col gap-4 pt-0">
@@ -558,13 +674,13 @@ export function Hero() {
             <div className="flex flex-wrap lg:justify-end gap-3 mb-6">
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-purple hover:bg-brand-violet text-white font-body font-semibold text-xs md:text-sm rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-brand-purple/20"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-purple hover:bg-brand-violet text-white font-body font-semibold text-xs md:text-sm rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-brand-purple/20"
               >
                 {"Explore Our Services"}
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-body font-semibold text-xs md:text-sm rounded-lg transition-all duration-300"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-body font-semibold text-xs md:text-sm rounded-full transition-all duration-300"
               >
                 {"Get in Touch"}
               </Link>

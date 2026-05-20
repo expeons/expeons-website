@@ -61,7 +61,7 @@ export function Packages() {
             <motion.div
               key={pkg.name}
               variants={animatedItemVariants}
-              className={`rounded-2xl p-6 flex flex-col gap-5 ${
+              className={`rounded-3xl p-6 flex flex-col gap-5 ${
                 pkg.featured
                   ? 'bg-brand-purple text-white shadow-xl shadow-brand-purple/20 lg:-mt-4 lg:pb-10'
                   : 'bg-white border border-neutral-200'
@@ -88,7 +88,7 @@ export function Packages() {
               </p>
               <Link
                 to="/contact"
-                className={`inline-flex items-center justify-center px-4 py-2.5 rounded-lg font-body font-medium text-sm transition-colors ${
+                className={`inline-flex items-center justify-center px-4 py-2.5 rounded-full font-body font-medium text-sm transition-colors ${
                   pkg.featured
                     ? 'bg-white text-brand-purple hover:bg-neutral-100'
                     : 'border border-brand-purple text-brand-purple hover:bg-brand-purple-light'

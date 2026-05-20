@@ -59,7 +59,7 @@ export function InsightsPreview() {
           {/* Featured */}
           <motion.div variants={animatedItemVariants}>
             <Link to={`/insights/${featured.slug}`} className="group block h-full">
-              <div className={`relative rounded-2xl bg-gradient-to-br ${featured.gradient} overflow-hidden h-72 lg:h-80 mb-5 flex items-end p-8`}>
+              <div className={`relative rounded-3xl bg-gradient-to-br ${featured.gradient} overflow-hidden h-72 lg:h-80 mb-5 flex items-end p-8`}>
                 <div className="absolute inset-0 opacity-20">
                   <img src="/brand/symbol-blue.png" alt="" aria-hidden="true" className="absolute bottom-4 right-4 w-32 opacity-20" />
                 </div>
@@ -83,7 +83,7 @@ export function InsightsPreview() {
             {rest.map((article) => (
               <motion.div key={article.slug} variants={animatedItemVariants}>
                 <Link to={`/insights/${article.slug}`} className="group block">
-                  <div className={`relative rounded-2xl bg-gradient-to-br ${article.gradient} overflow-hidden h-36 mb-4`}>
+                  <div className={`relative rounded-3xl bg-gradient-to-br ${article.gradient} overflow-hidden h-36 mb-4`}>
                     <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute bottom-4 left-4">
                       <Badge variant="navy" className="bg-white/10 text-white border-0 text-xs">{article.category}</Badge>

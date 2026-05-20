@@ -49,3 +49,14 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
+
+/* ─────────────────────────────────────────────────────────
+   Brand hero gradient — used on all inner-page hero sections
+   and as the WebGL fallback on the home hero.
+   Matches the periwinkle → deep indigo reference.
+   ───────────────────────────────────────────────────────── */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 90% 80% at 20% 15%, #7C79FF 0%, #5B5CF6 30%, #3730a3 60%, #1e1b6b 100%);
+}
+

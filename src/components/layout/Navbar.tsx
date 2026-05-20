@@ -15,17 +15,24 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  const isDark = location.pathname === '/' || location.pathname === '/services';
+  // All pages now have a dark hero-gradient at the top, so the navbar
+  // should always be transparent until the user scrolls past it.
+  const isDark = true;
+
+  useEffect(() => {
+    // Reset to transparent immediately on every route change —
+    // without this, navigating while scrolled keeps the white bg on the new page
+    setScrolled(false);
+    setMenuOpen(false);
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 80);
     window.addEventListener('scroll', handler, { passive: true });
-    handler();
+    // Don't call handler() immediately — the route-change reset above is authoritative.
+    // The listener will update naturally once the user scrolls.
     return () => window.removeEventListener('scroll', handler);
-  }, []);
-
-  useEffect(() => {
-    setMenuOpen(false);
   }, [location.pathname]);
 
   const transparent = isDark && !scrolled;
@@ -48,7 +55,7 @@ export function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
           <img
-            src={transparent ? '/brand/logo-white.png' : '/brand/logo-black.png'}
+            src={transparent ? '/brand/logo-white-2.png' : '/brand/logo-black.png'}
             alt="Expeons"
             className="h-7 lg:h-8 w-auto"
           />
@@ -64,13 +71,13 @@ export function Navbar() {
                 to={link.href}
                 className={`font-body font-medium text-sm transition-colors relative pb-0.5 ${
                   transparent
-                    ? 'text-white/90 hover:text-white'
+                    ? 'text-white/80 hover:text-white'
                     : 'text-neutral-700 hover:text-brand-purple'
-                } ${active ? 'text-brand-purple' : ''}`}
+                } ${active ? (transparent ? 'text-white' : 'text-brand-purple') : ''}`}
               >
                 {link.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-purple rounded-full" />
+                  <span className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brand-purple'}`} />
                 )}
               </Link>
             );
@@ -81,7 +88,7 @@ export function Navbar() {
         <div className="hidden lg:block">
           <Link
             to="/contact"
-            className="inline-flex items-center px-5 py-2.5 bg-brand-purple text-white font-body font-medium text-sm rounded-lg hover:bg-brand-violet transition-colors duration-200"
+            className="inline-flex items-center px-5 py-2.5 bg-brand-purple text-white font-body font-medium text-sm rounded-full hover:bg-brand-violet transition-colors duration-200"
           >
             Get a Quote
           </Link>
@@ -126,7 +133,7 @@ export function Navbar() {
               })}
               <Link
                 to="/contact"
-                className="mt-2 inline-flex items-center justify-center px-5 py-3 bg-brand-purple text-white font-body font-medium text-sm rounded-lg hover:bg-brand-violet transition-colors"
+                className="mt-2 inline-flex items-center justify-center px-5 py-3 bg-brand-purple text-white font-body font-medium text-sm rounded-full hover:bg-brand-violet transition-colors"
               >
                 Get a Quote
               </Link>

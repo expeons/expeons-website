@@ -13,13 +13,9 @@ const values = [
 
 export function About() {
   return (
-    <div className="pt-16 lg:pt-20">
-      {/* Hero */}
-      <section className="relative bg-brand-navy overflow-hidden py-24 lg:py-36">
-        <div
-          className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #7C79FF 0%, #5B5CF6 40%, transparent 70%)', transform: 'translate(20%, -20%)' }}
-        />
+    <div>
+      {/* Hero — no pt-16 wrapper; gradient must reach the very top so the transparent navbar sits over it */}
+      <section className="relative hero-gradient overflow-hidden pt-40 pb-24 lg:pt-56 lg:pb-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -27,7 +23,7 @@ export function About() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <p className="font-body font-semibold tracking-widest uppercase text-xs text-brand-violet mb-6">About Us</p>
+            <p className="font-body font-semibold tracking-widest uppercase text-xs text-white/60 mb-6">About Us</p>
             <h1 className="font-heading font-bold text-4xl lg:text-6xl text-white leading-tight mb-6">
               Engineers who've <em className="not-italic text-brand-violet">lived inside</em> EPC projects.
             </h1>
@@ -78,7 +74,7 @@ export function About() {
                   <motion.div
                     key={value.title}
                     variants={animatedItemVariants}
-                    className="p-5 bg-neutral-50 rounded-xl border border-neutral-200"
+                    className="p-5 bg-neutral-50 rounded-3xl border border-neutral-200"
                   >
                     <div className="w-6 h-0.5 bg-brand-purple mb-3" />
                     <h3 className="font-heading font-semibold text-base text-brand-navy mb-2">{value.title}</h3>
@@ -103,7 +99,7 @@ export function About() {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-purple text-white font-body font-medium text-base rounded-lg hover:bg-brand-violet transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-purple text-white font-body font-medium text-base rounded-full hover:bg-brand-violet transition-colors"
             >
               Get in Touch →
             </Link>

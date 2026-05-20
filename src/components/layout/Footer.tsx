@@ -8,7 +8,7 @@ export function Footer() {
         {/* Row 1 */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-12 pb-12 border-b border-white/10">
           <div className="flex flex-col gap-3">
-            <img src="/brand/logo-white.png" alt="Expeons" className="h-7 w-auto" />
+            <img src="/brand/logo-white.png" alt="Expeons" className="h-7 w-auto self-start" />
             <p className="font-body text-sm text-white/60 uppercase tracking-widest">Precision Process Engineering</p>
           </div>
           <p className="font-body text-sm text-white/50 lg:text-right max-w-sm leading-relaxed">
@@ -69,9 +69,14 @@ export function Footer() {
           <p className="font-body text-xs text-white/40">
             © 2025 Expeons. All rights reserved.
           </p>
-          <p className="font-body text-xs text-white/40">
-            Registered in India.
-          </p>
+          <div className="flex items-center gap-5">
+            <Link to="/privacy" className="font-body text-xs text-white/40 hover:text-white/70 transition-colors">
+              Privacy Policy
+            </Link>
+            <p className="font-body text-xs text-white/40">
+              Registered in India.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

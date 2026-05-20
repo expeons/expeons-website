@@ -22,20 +22,20 @@ export function Insights() {
   const rest = filtered.slice(1);
 
   return (
-    <div className="pt-16 lg:pt-20">
-      {/* Hero */}
-      <section className="bg-white border-b border-neutral-200 py-16 lg:py-24">
+    <div>
+      {/* Hero — gradient reaches top so transparent navbar sits over it */}
+      <section className="hero-gradient pt-32 pb-16 lg:pt-44 lg:pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="font-body font-semibold tracking-widest uppercase text-xs text-brand-purple mb-5">Engineering Notes</p>
-            <h1 className="font-heading font-bold text-4xl lg:text-6xl text-brand-navy mb-5 max-w-3xl leading-tight">
-              Process engineering <em className="not-italic text-brand-purple">insights,</em> written by engineers.
+            <p className="font-body font-semibold tracking-widest uppercase text-xs text-white/60 mb-5">Engineering Notes</p>
+            <h1 className="font-heading font-bold text-4xl lg:text-6xl text-white mb-5 max-w-3xl leading-tight">
+              Process engineering <em className="not-italic text-brand-violet">insights,</em> written by engineers.
             </h1>
-            <p className="font-body text-base lg:text-lg text-neutral-500 max-w-2xl leading-relaxed">
+            <p className="font-body text-base lg:text-lg text-white/70 max-w-2xl leading-relaxed">
               Technical guides, EPC workflow breakdowns, simulation tips, and industry perspectives — designed to be genuinely useful.
             </p>
           </motion.div>
@@ -74,7 +74,7 @@ export function Insights() {
               {featured && (
                 <AnimatedSection>
                   <Link to={`/insights/${featured.slug}`} className="group block">
-                    <div className={`relative rounded-2xl bg-gradient-to-br ${gradients[0]} overflow-hidden p-10 lg:p-16 mb-6`}>
+                    <div className={`relative rounded-3xl bg-gradient-to-br ${gradients[0]} overflow-hidden p-10 lg:p-16 mb-6 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl`}>
                       <div className="absolute top-4 right-4 opacity-10">
                         <img src="/brand/symbol-white.png" alt="" aria-hidden="true" className="w-40" />
                       </div>
@@ -100,7 +100,7 @@ export function Insights() {
                   {rest.map((article, i) => (
                     <motion.div key={article.slug} variants={animatedItemVariants}>
                       <Link to={`/insights/${article.slug}`} className="group block h-full">
-                        <div className={`rounded-2xl bg-gradient-to-br ${gradients[(i + 1) % gradients.length]} h-44 mb-5 relative overflow-hidden`}>
+                        <div className={`rounded-3xl bg-gradient-to-br ${gradients[(i + 1) % gradients.length]} h-44 mb-5 relative overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl`}>
                           <div className="absolute inset-0 bg-black/20" />
                           <div className="absolute bottom-4 left-4">
                             <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-semibold bg-white/10 text-white border border-white/20">

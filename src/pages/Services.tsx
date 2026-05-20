@@ -97,13 +97,9 @@ const serviceDetails: ServiceDetail[] = [
 
 export function Services() {
   return (
-    <div className="pt-16 lg:pt-20">
-      {/* Hero */}
-      <section className="relative bg-brand-navy overflow-hidden py-24 lg:py-36">
-        <div
-          className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #7C79FF 0%, #5B5CF6 40%, transparent 70%)', transform: 'translate(20%, -20%)' }}
-        />
+    <div>
+      {/* Hero — gradient reaches top so transparent navbar sits over it */}
+      <section className="relative hero-gradient overflow-hidden pt-40 pb-24 lg:pt-56 lg:pb-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -111,7 +107,7 @@ export function Services() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <p className="font-body font-semibold tracking-widest uppercase text-xs text-brand-violet mb-6">What We Offer</p>
+            <p className="font-body font-semibold tracking-widest uppercase text-xs text-white/60 mb-6">What We Offer</p>
             <h1 className="font-heading font-bold text-4xl lg:text-6xl text-white leading-tight mb-6">
               Specialized process engineering deliverables,{' '}
               <em className="not-italic text-brand-violet">built for EPC standards.</em>
@@ -134,8 +130,8 @@ export function Services() {
                 <AnimatedSection key={service.title} className={`grid lg:grid-cols-2 gap-12 items-center ${!isEven ? 'lg:[&>*:first-child]:order-2' : ''}`}>
                   {/* Text */}
                   <div>
-                    <div className="w-12 h-12 bg-brand-purple-light rounded-2xl flex items-center justify-center mb-6">
-                      <Icon size={22} className="text-brand-purple" />
+                    <div className="mb-6 text-brand-purple">
+                      <Icon size={32} />
                     </div>
                     <h2 className="font-heading font-bold text-3xl text-brand-navy mb-5">{service.title}</h2>
                     {service.description.map((para, j) => (
@@ -145,7 +141,7 @@ export function Services() {
 
                   {/* Details */}
                   <div className="flex flex-col gap-6">
-                    <div className="bg-neutral-50 rounded-2xl p-6 border border-neutral-200">
+                    <div className="bg-neutral-50 rounded-3xl p-6 border border-neutral-200">
                       <h4 className="font-heading font-semibold text-sm uppercase tracking-widest text-neutral-400 mb-4">Typical Deliverables</h4>
                       <ul className="flex flex-col gap-2.5">
                         {service.deliverables.map((d) => (
@@ -184,7 +180,7 @@ export function Services() {
             <p className="font-body text-base text-neutral-500 mb-8">Tell us about your project and we'll put together a clear scope and proposal.</p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-purple text-white font-body font-medium text-base rounded-lg hover:bg-brand-violet transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-purple text-white font-body font-medium text-base rounded-full hover:bg-brand-violet transition-colors"
             >
               Get in Touch →
             </Link>

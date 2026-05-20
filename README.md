@@ -12,7 +12,7 @@ The project is built using a modern, performant, and type-safe front-end archite
 
 1. **Core Framework**: **React (v18.2.0)** inside a robust **TypeScript (v5.2.2)** environment.
 2. **Build Tool & Bundler**: **Vite (v5.0.8)** with fast hot-reloading and optimized production tree-shaking.
-3. **Styling Engine**: **Tailwind CSS (v4.0.0)** leveraging compile-time CSS injections for utility styles.
+3. **Styling Engine**: **Tailwind CSS (v4.0.0)** leveraging the official Vite plugin and CSS-first configuration via `@theme` in `src/index.css`.
 4. **Interactive Animations**:
    - **GSAP (GreenSock Animation Platform)**: Powering high-performance mouse-responsive timelines, dynamic hover effects, and uniform shader interpolation.
    - **Framer Motion (v10.16.0)**: Delivering smooth transitions, layout adjustments, and semantic page routings.
@@ -53,7 +53,6 @@ The project is built using a modern, performant, and type-safe front-end archite
 │   ├── App.tsx            # Main application router and routes mapping
 │   ├── index.css          # Styling tokens, font settings, and Tailwind imports
 │   └── main.tsx           # Application compiler mountpoint
-├── tailwind.config.ts     # Utility tokens and custom design system extensions
 ├── tsconfig.json          # TypeScript configurations and path mappings (@/*)
 └── vite.config.ts         # Vite server settings and path alias resolvers
 ```

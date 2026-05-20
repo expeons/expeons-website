@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -7,20 +8,45 @@ import { About } from './pages/About';
 import { Insights } from './pages/Insights';
 import { ArticlePage } from './pages/ArticlePage';
 import { Contact } from './pages/Contact';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
 
-export default function App() {
+const pageVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -6, transition: { duration: 0.2, ease: 'easeIn' } },
+};
+
+function AnimatedRoutes() {
+  const location = useLocation();
   return (
-    <BrowserRouter>
-      <Navbar />
-      <main>
-        <Routes>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
+        <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/insights" element={<Insights />} />
           <Route path="/insights/:slug" element={<ArticlePage />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <main>
+        <AnimatedRoutes />
       </main>
       <Footer />
     </BrowserRouter>
