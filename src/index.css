@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@import 'tailwindcss';
+
+@theme {
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --color-brand-purple: #5B5CF6;
+  --color-brand-violet: #7C79FF;
+  --color-brand-purple-light: #EEF2FF;
+  --color-brand-navy: #0D0F1F;
+  --color-brand-navy-mid: #1A1A3E;
+
+  --color-neutral-50: #F8F9FC;
+  --color-neutral-100: #F1F3F9;
+  --color-neutral-200: #E2E6F0;
+  --color-neutral-300: #C8CEDC;
+  --color-neutral-400: #9BA4B8;
+  --color-neutral-500: #6B7592;
+  --color-neutral-600: #4A5268;
+  --color-neutral-700: #2E3347;
+  --color-neutral-800: #1C2035;
+  --color-neutral-900: #0D0F1F;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #ffffff;
+  color: #0D0F1F;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
