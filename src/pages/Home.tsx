@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { Hero } from '../components/home/Hero';
 import { StatsStrip } from '../components/home/StatsStrip';
 import { Services } from '../components/home/Services';
@@ -10,6 +11,11 @@ import { CTABand } from '../components/home/CTABand';
 export function Home() {
   return (
     <>
+      <Helmet>
+        <title>Expeons | Precision Process Engineering & Aspen HYSYS Simulation</title>
+        <meta name="description" content="Expeons provides high-precision process engineering, Aspen HYSYS simulation services, and EPC-ready documentation delivery for industrial projects." />
+        <link rel="canonical" href="https://expeons.com" />
+      </Helmet>
       <Hero />
       <StatsStrip />
       <Services />

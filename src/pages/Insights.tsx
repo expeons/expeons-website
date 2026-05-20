@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Clock, Calendar } from 'lucide-react';
 import { AnimatedSection, animatedItemVariants } from '../components/ui/AnimatedSection';
 import { articles, categories } from '../data/insights';
@@ -23,6 +24,11 @@ export function Insights() {
 
   return (
     <div>
+      <Helmet>
+        <title>Engineering Insights & Process Knowledge | Expeons</title>
+        <meta name="description" content="Technical guides, simulation tips, and industry insights on process engineering, HYSYS, and EPC workflows." />
+        <link rel="canonical" href="https://expeons.com/insights" />
+      </Helmet>
       {/* Hero — gradient reaches top so transparent navbar sits over it */}
       <section className="hero-gradient pt-32 pb-16 lg:pt-44 lg:pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">

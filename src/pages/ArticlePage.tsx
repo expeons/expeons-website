@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Calendar, ArrowLeft } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { getArticleBySlug, articles } from '../data/insights';
 import { useState, useEffect, useMemo } from 'react';
 import type { ReactElement } from 'react';
@@ -143,6 +144,8 @@ export function ArticlePage() {
 
   if (!article) return <Navigate to="/insights" replace />;
 
+  const siteUrl = 'https://expeons.com'; // Replace with actual domain
+  const articleUrl = `${siteUrl}/insights/${article.slug}`;
   const related = articles.filter((a) => a.slug !== article.slug).slice(0, 2);
 
   // Extract headings memoized
@@ -190,8 +193,59 @@ export function ArticlePage() {
     };
   }, [article.slug, headings]);
 
+  const pageTitle = article.seoTitle ? `${article.seoTitle} | Expeons Insights` : `${article.title} | Expeons Insights`;
+  const pageDescription = article.seoDescription || article.excerpt;
+
   return (
     <div>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        {article.keywords && <meta name="keywords" content={article.keywords} />}
+        <link rel="canonical" href={articleUrl} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={articleUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={`${siteUrl}/brand/logo-black.png`} />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={articleUrl} />
+        <meta property="twitter:title" content={pageTitle} />
+        <meta property="twitter:description" content={pageDescription} />
+        
+        {/* LLM Advantage: Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": pageTitle,
+            "description": pageDescription,
+            "keywords": article.keywords,
+            "datePublished": article.date,
+            "author": {
+              "@type": "Organization",
+              "name": "Expeons"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Expeons",
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${siteUrl}/brand/logo-black.png`
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": articleUrl
+            }
+          })}
+        </script>
+      </Helmet>
+
       {/* Header — gradient reaches top so transparent navbar sits over it */}
       <section className="hero-gradient pt-28 pb-12 lg:pt-40 lg:pb-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">

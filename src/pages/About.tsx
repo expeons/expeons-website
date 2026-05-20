@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { AnimatedSection, animatedItemVariants } from '../components/ui/AnimatedSection';
 
 const values = [
@@ -14,6 +15,11 @@ const values = [
 export function About() {
   return (
     <div>
+      <Helmet>
+        <title>About Expeons | Precision Process Engineering Specialists</title>
+        <meta name="description" content="Learn about Expeons, our story, and our mission to provide EPC-ready process engineering support for the industrial sector." />
+        <link rel="canonical" href="https://expeons.com/about" />
+      </Helmet>
       {/* Hero — no pt-16 wrapper; gradient must reach the very top so the transparent navbar sits over it */}
       <section className="relative hero-gradient overflow-hidden pt-40 pb-24 lg:pt-56 lg:pb-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">

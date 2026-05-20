@@ -1,4 +1,5 @@
 import { GitBranch, FileText, Zap, BookOpen, Activity, Shield, ClipboardList, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -98,6 +99,11 @@ const serviceDetails: ServiceDetail[] = [
 export function Services() {
   return (
     <div>
+      <Helmet>
+        <title>Process Engineering Services | Expeons</title>
+        <meta name="description" content="Specialized process engineering deliverables including PFDs, Heat & Mass Balance, Simulation, and Safety Reviews for EPC projects." />
+        <link rel="canonical" href="https://expeons.com/services" />
+      </Helmet>
       {/* Hero — gradient reaches top so transparent navbar sits over it */}
       <section className="relative hero-gradient overflow-hidden pt-40 pb-24 lg:pt-56 lg:pb-36">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">

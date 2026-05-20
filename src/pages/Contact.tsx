@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Mail, CheckCircle2, AlertCircle, ExternalLink, ChevronDown, Loader2, Phone } from 'lucide-react';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 
@@ -58,6 +59,11 @@ export function Contact() {
 
   return (
     <div className="hero-gradient min-h-screen">
+      <Helmet>
+        <title>Contact Us | Get a Quote for Process Engineering | Expeons</title>
+        <meta name="description" content="Get in touch with Expeons for a technical proposal or a quote for your process engineering project." />
+        <link rel="canonical" href="https://expeons.com/contact" />
+      </Helmet>
       {/* Hero — transparent container since parent div has hero-gradient */}
       <section className="pt-32 pb-12 lg:pt-44 lg:pb-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">

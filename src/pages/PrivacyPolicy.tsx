@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const lastUpdated = 'May 20, 2025';
 
@@ -139,6 +140,11 @@ We aim to respond to all data-related requests within 30 days.`,
 export function PrivacyPolicy() {
   return (
     <div>
+      <Helmet>
+        <title>Privacy Policy | Expeons</title>
+        <meta name="description" content="Read the Expeons Privacy Policy to understand how we handle your data and protect your privacy." />
+        <link rel="canonical" href="https://expeons.com/privacy" />
+      </Helmet>
       {/* Hero */}
       <section className="hero-gradient pt-36 pb-16 lg:pt-48 lg:pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
