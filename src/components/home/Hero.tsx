@@ -41,8 +41,8 @@ const fragmentShader = `
     float value = 0.0;
     float amplitude = 1.0;
     float frequency = 0.25;
-    
-    for(int i = 0; i < 10; i++) {
+    // Capped at 6 octaves max for performance (avoids heavy GPU load that causes stuttering)
+    for(int i = 0; i < 6; i++) {
       if(i >= octaves) break;
       value += amplitude * noise(p * frequency);
       amplitude *= 0.52;
@@ -107,11 +107,11 @@ const fragmentShader = `
     vec2 curlForce = curl(st * 2.0, time) * 0.6;
     vec2 flowField = st + curlForce;
     
-    // Multiple smooth distortion layers
-    float dist1 = fbm(flowField * 1.5 + time * 1.2, 8) * 0.4;
-    float dist2 = fbm(flowField * 2.3 - time * 0.8, 6) * 0.3;
-    float dist3 = fbm(flowField * 3.1 + time * 1.8, 4) * 0.2;
-    float dist4 = fbm(flowField * 4.7 - time * 1.1, 3) * 0.15;
+    // Multiple smooth distortion layers (octave counts reduced for performance)
+    float dist1 = fbm(flowField * 1.5 + time * 1.2, 5) * 0.4;
+    float dist2 = fbm(flowField * 2.3 - time * 0.8, 4) * 0.3;
+    float dist3 = fbm(flowField * 3.1 + time * 1.8, 3) * 0.2;
+    float dist4 = fbm(flowField * 4.7 - time * 1.1, 2) * 0.15;
     
     // Smooth voronoi cellular structure
     float cells = voronoi(flowField * 2.5 + time * 0.5);
@@ -232,15 +232,7 @@ const fragmentShader = `
     
     // Final saturation and brightness
     result = mix(vec3(dot(result, vec3(0.299, 0.587, 0.114))), result, 1.3);
-
-    // Film grain effect
-    float grainAmount = 0.08; // Slightly reduced for cleaner corporate aesthetic
-    float grainValue = grain(uv, time * 0.5) * 2.0 - 1.0;
-    result += grainValue * grainAmount;
-
-    // Subtle scanlines
-    float scanline = sin(uv.y * u_resolution.y * 2.0) * 0.03;
-    result += scanline;
+    // Note: Film grain and scanlines removed — they caused per-frame random flicker and shimmer
     
     gl_FragColor = vec4(result, 1.0);
   }
@@ -414,12 +406,18 @@ export function Hero() {
     const intensityLocation = gl.getUniformLocation(program, "u_intensity")
     intensityLocationRef.current = intensityLocation
 
-    // Resize canvas
+    // Resize canvas — debounced to avoid flash during rapid resize events
+    let resizeTimer: ReturnType<typeof setTimeout>
     const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect()
-      canvas.width = rect.width * window.devicePixelRatio
-      canvas.height = rect.height * window.devicePixelRatio
-      gl.viewport(0, 0, canvas.width, canvas.height)
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        const rect = canvas.getBoundingClientRect()
+        // Cap pixel ratio at 2 to avoid over-rendering on high-DPI mobile devices
+        const dpr = Math.min(window.devicePixelRatio, 2)
+        canvas.width = rect.width * dpr
+        canvas.height = rect.height * dpr
+        gl.viewport(0, 0, canvas.width, canvas.height)
+      }, 50)
     }
 
     resizeCanvas()
@@ -428,8 +426,9 @@ export function Hero() {
     // Mouse tracking
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      mouseRef.current.x = (e.clientX - rect.left) * window.devicePixelRatio
-      mouseRef.current.y = (rect.height - (e.clientY - rect.top)) * window.devicePixelRatio
+      const dpr = Math.min(window.devicePixelRatio, 2)
+      mouseRef.current.x = (e.clientX - rect.left) * dpr
+      mouseRef.current.y = (rect.height - (e.clientY - rect.top)) * dpr
 
       // Smoother intensity changes
       gsap.to(globalIntensityRef, {
@@ -454,8 +453,18 @@ export function Hero() {
     initGL()
 
     let animationFrameId: number
+    let lastFrameTime = 0
+    // On mobile, cap to ~30fps to reduce GPU pressure and prevent stuttering
+    const isMobile = window.matchMedia("(max-width: 768px)").matches
+    const targetInterval = isMobile ? 1000 / 30 : 1000 / 60
 
-    const animateFrame = () => {
+    const animateFrame = (timestamp: number) => {
+      animationFrameId = requestAnimationFrame(animateFrame)
+
+      const elapsed = timestamp - lastFrameTime
+      if (elapsed < targetInterval) return
+      lastFrameTime = timestamp - (elapsed % targetInterval)
+
       const time = (Date.now() - startTimeRef.current) * 0.001
       const gl = glRef.current
       const program = programRef.current
@@ -479,10 +488,9 @@ export function Hero() {
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
       }
-      animationFrameId = requestAnimationFrame(animateFrame)
     }
 
-    animateFrame()
+    animationFrameId = requestAnimationFrame(animateFrame)
 
     return () => {
       cancelAnimationFrame(animationFrameId)
@@ -491,10 +499,15 @@ export function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-brand-navy">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" style={{ background: "#050612" }} />
+      {/* will-change + transform promote canvas to its own GPU layer, preventing composite thrashing */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ background: "#050612", willChange: "transform", transform: "translateZ(0)" }}
+      />
       
-      {/* Mobile-only fullscreen glassmorphism backdrop overlay layer */}
-      <div className="absolute inset-0 bg-neutral-950/45 backdrop-blur-[6px] lg:hidden pointer-events-none z-0" />
+      {/* Mobile overlay — static gradient, NO backdrop-blur (blur over animating WebGL causes severe GPU composite thrashing) */}
+      <div className="absolute inset-0 lg:hidden pointer-events-none z-0" style={{ background: "linear-gradient(to bottom, rgba(5,6,18,0.55) 0%, rgba(5,6,18,0.35) 50%, rgba(5,6,18,0.6) 100%)" }} />
 
       <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-12 lg:p-16">
         <div ref={heroTextRef} className="text-left flex flex-col gap-4 pt-0">
