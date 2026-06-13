@@ -44,9 +44,9 @@ export function Footer() {
             <h4 className="font-heading font-semibold text-sm uppercase tracking-widest text-white/40 mb-4">Contact</h4>
             <ul className="flex flex-col gap-2.5">
               <li>
-                <a href="mailto:hello@expeons.com" className="font-body text-sm text-white/70 hover:text-white transition-colors flex items-center gap-2">
+                <a href="mailto:info@expeons.com" className="font-body text-sm text-white/70 hover:text-white transition-colors flex items-center gap-2">
                   <Mail size={14} />
-                  hello@expeons.com
+                  info@expeons.com
                 </a>
               </li>
               <li>
@@ -67,11 +67,14 @@ export function Footer() {
         {/* Row 3 */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <p className="font-body text-xs text-white/40">
-            © 2025 Expeons. All rights reserved.
+            © 2026 Expeons. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             <Link to="/privacy" className="font-body text-xs text-white/40 hover:text-white/70 transition-colors">
               Privacy Policy
+            </Link>
+            <Link to="/terms" className="font-body text-xs text-white/40 hover:text-white/70 transition-colors">
+              Terms & Conditions
             </Link>
             <p className="font-body text-xs text-white/40">
               Registered in India.

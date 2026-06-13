@@ -300,7 +300,7 @@ export function ArticlePage() {
 
             {/* Sticky Sidebar card for Table of Contents (Scroll Spy) & Related */}
             <aside className="hidden lg:block sticky top-28 self-start w-full">
-              <div className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm flex flex-col gap-8">
+              <div className="bg-white rounded-3xl p-6 shadow-sm flex flex-col gap-8">
                 {/* On this page */}
                 {headings.length > 0 && (
                   <div>
@@ -358,11 +358,11 @@ export function ArticlePage() {
 
           {/* Bottom Related Articles (Visible on mobile/tablet, hidden on desktop sidebar) */}
           {related.length > 0 && (
-            <div className="mt-16 lg:hidden border-t border-neutral-200 pt-12">
+            <div className="mt-16 lg:hidden pt-12">
               <h3 className="font-heading font-semibold text-xl text-brand-navy mb-6">Related Articles</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {related.map((r) => (
-                  <Link key={r.slug} to={`/insights/${r.slug}`} className="group block p-5 bg-neutral-50 rounded-3xl border border-neutral-200 hover:border-brand-purple transition-colors">
+                  <Link key={r.slug} to={`/insights/${r.slug}`} className="group block p-5 bg-neutral-50 rounded-3xl hover:bg-neutral-100 transition-colors shadow-sm">
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-body font-semibold bg-brand-purple-light text-brand-purple mb-3">
                       {r.category}
                     </span>

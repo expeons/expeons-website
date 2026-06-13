@@ -16,10 +16,10 @@ Without an accurate H&MB, the project has no reliable basis. Overestimated flows
 
 ## Stream Table Structure
 
-The H&MB is typically presented as a stream table, organized around the process flow diagram (PFD). Each column represents a stream; each row is a process variable.
+The H&MB is typically presented as a stream table, organized around the piping and instrumentation diagram (P&ID). Each column represents a stream; each row is a process variable.
 
 Standard rows include:
-- **Stream number** — unique identifier tied to the PFD
+- **Stream number** — unique identifier tied to the P&ID
 - **Temperature (°C)** — operating temperature
 - **Pressure (kPa or bar g)** — operating pressure
 - **Total mass flow (kg/h)** — overall stream flowrate
@@ -31,11 +31,11 @@ Standard rows include:
 
 Compositions are listed for every component in the system, even if trace. EPC reviewers look for completeness — missing components are a common rejection reason.
 
-## How It Connects to the PFD
+## How It Connects to the P&ID
 
-The H&MB and PFD are inseparable documents. Stream numbers on the PFD directly reference columns in the stream table. Equipment tags (heat exchangers, separators, pumps) map to process blocks between streams.
+The H&MB and P&ID are inseparable documents. Stream numbers on the P&ID directly reference columns in the stream table. Equipment tags (heat exchangers, separators, pumps) map to process blocks between streams.
 
-A reviewer should be able to trace any stream from the PFD directly to its full thermodynamic description in the table — and back. This traceability is what makes EPC review possible.
+A reviewer should be able to trace any stream from the P&ID directly to its full thermodynamic description in the table — and back. This traceability is what makes EPC review possible.
 
 ## Common Errors to Avoid
 
@@ -48,7 +48,7 @@ A reviewer should be able to trace any stream from the PFD directly to its full 
 ## What an EPC Client Expects
 
 EPC review teams look for:
-- All PFD streams numbered and matched
+- All P&ID streams numbered and matched
 - Both normal and design case conditions
 - Utility streams included (steam, cooling water, heating)
 - Clear phase designations

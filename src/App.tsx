@@ -9,6 +9,8 @@ import { Insights } from './pages/Insights';
 import { ArticlePage } from './pages/ArticlePage';
 import { Contact } from './pages/Contact';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsAndConditions } from './pages/TermsAndConditions';
+
 
 const pageVariants = {
   initial: { opacity: 0, y: 10 },
@@ -35,6 +37,7 @@ function AnimatedRoutes() {
           <Route path="/insights/:slug" element={<ArticlePage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

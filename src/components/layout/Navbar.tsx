@@ -55,7 +55,7 @@ export function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
           <img
-            src={transparent ? '/brand/logo-white-2.png' : '/brand/logo-black.png'}
+            src={transparent ? '/brand/logo-white.png' : '/brand/logo-black.png'}
             alt="Expeons"
             className="h-7 lg:h-8 w-auto"
           />

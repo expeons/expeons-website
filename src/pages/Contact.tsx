@@ -13,38 +13,19 @@ const schema = z.object({
   email: z.string().email('Please enter a valid email'),
   phone: z.string().optional(),
   projectType: z.string().min(1, 'Please select a project type'),
-  services: z.array(z.string()).optional(),
+  supportType: z.string().min(1, 'Please select a support type'),
   message: z.string().min(20, 'Please describe your project (at least 20 characters)'),
 });
 
 type FormData = z.infer<typeof schema>;
 
-const serviceOptions = [
-  'PFDs & Heat-Mass Balance',
-  'Process Datasheets',
-  'Utility Balance',
-  'Design Basis Documents',
-  'Aspen HYSYS / Plus Simulation',
-  'HAZOP & Safety Reviews',
-  'SOPs & Compliance Docs',
-  'Technical Bid Evaluations',
-];
-
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { services: [] },
   });
-
-  const toggleService = (service: string) => {
-    setSelectedServices((prev) =>
-      prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service]
-    );
-  };
 
   const onSubmit = async (_data: FormData) => {
     setError('');
@@ -87,7 +68,7 @@ export function Contact() {
           <div className="grid lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16 items-start">
             {/* Form */}
             <AnimatedSection>
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-10 shadow-xl shadow-black/10">
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 lg:p-10 shadow-xl shadow-black/10">
                 {submitted ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -139,41 +120,41 @@ export function Contact() {
                       </div>
                     </div>
 
-                    {/* Project Type */}
-                    <div>
-                      <div className="relative">
-                        <select
-                          {...register('projectType')}
-                          className="w-full appearance-none px-4 py-3 pr-10 rounded-lg border border-white/20 bg-white/15 backdrop-blur-sm font-body text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/50 transition-all cursor-pointer [&>option]:bg-brand-navy [&>option]:text-white"
-                        >
-                          <option value="">Project type *</option>
-                          <option value="epc">EPC Contract</option>
-                          <option value="industrial">Industrial Facility</option>
-                          <option value="sme">SME / Startup</option>
-                          <option value="other">Other</option>
-                        </select>
-                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
-                      </div>
-                      {errors.projectType && <p className="mt-1.5 text-xs text-red-400 font-body">{errors.projectType.message}</p>}
-                    </div>
-
-                    {/* Services */}
-                    <div>
-                      <div className="flex flex-wrap gap-2.5">
-                        {serviceOptions.map((service) => (
-                          <button
-                            key={service}
-                            type="button"
-                            onClick={() => toggleService(service)}
-                            className={`font-body text-xs px-3.5 py-2 rounded-full border transition-all duration-150 ${
-                              selectedServices.includes(service)
-                                ? 'bg-white text-brand-purple border-white font-semibold'
-                                : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:border-white/40 hover:text-white'
-                            }`}
+                    {/* Project Type + Support Type */}
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      <div>
+                        <div className="relative">
+                          <select
+                            {...register('projectType')}
+                            className="w-full appearance-none px-4 py-3 pr-10 rounded-lg border border-white/20 bg-white/15 backdrop-blur-sm font-body text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/50 transition-all cursor-pointer [&>option]:bg-brand-navy [&>option]:text-white"
                           >
-                            {service}
-                          </button>
-                        ))}
+                            <option value="">Project type *</option>
+                            <option value="epc">EPC Contract</option>
+                            <option value="industrial">Industrial Facility</option>
+                            <option value="sme">SME / Startup</option>
+                            <option value="other">Other</option>
+                          </select>
+                          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+                        </div>
+                        {errors.projectType && <p className="mt-1.5 text-xs text-red-400 font-body">{errors.projectType.message}</p>}
+                      </div>
+                      
+                      <div>
+                        <div className="relative">
+                          <select
+                            {...register('supportType')}
+                            className="w-full appearance-none px-4 py-3 pr-10 rounded-lg border border-white/20 bg-white/15 backdrop-blur-sm font-body text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/50 transition-all cursor-pointer [&>option]:bg-brand-navy [&>option]:text-white"
+                          >
+                            <option value="">Support type *</option>
+                            <option value="feed">Full FEED Package</option>
+                            <option value="conceptual">Conceptual / Feasibility</option>
+                            <option value="individual">Individual Deliverables</option>
+                            <option value="hazop">Independent Review / HAZOP</option>
+                            <option value="ops">Operational Support</option>
+                          </select>
+                          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+                        </div>
+                        {errors.supportType && <p className="mt-1.5 text-xs text-red-400 font-body">{errors.supportType.message}</p>}
                       </div>
                     </div>
 
@@ -223,17 +204,27 @@ export function Contact() {
                 <p className="font-body font-semibold tracking-widest uppercase text-xs text-white/50 mb-5">Our Offices</p>
                 <div className="flex flex-col gap-4">
                   {[
-                    { country: 'India', phone: '+91 98765 43210' },
-                    { country: 'Dubai', phone: '+971 50 123 4567' },
-                    { country: 'Kuwait', phone: '+965 9876 5432' },
-                    { country: 'Qatar', phone: '+974 5512 3456' },
+                    { country: 'India', phone: ['+91 81118 91185', '+91 79029 52298'] },
+                    { country: 'UAE', phone: '+971 54 758 2335' },
+                    { country: 'Kuwait', phone: '+965 6694 1957' },
                   ].map(({ country, phone }) => (
-                    <div key={country} className="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
+                    <div key={country} className="flex items-start justify-between py-3 border-b border-white/10 last:border-0">
                       <span className="font-body text-sm font-medium text-white/90">{country}</span>
-                      <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-2 font-body text-sm text-white/60 hover:text-white transition-colors group">
-                        <Phone size={13} className="group-hover:text-white transition-colors" />
-                        {phone}
-                      </a>
+                      <div className="flex flex-col items-end gap-2">
+                        {Array.isArray(phone) ? (
+                          phone.map((p) => (
+                            <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="flex items-center gap-2 font-body text-sm text-white/60 hover:text-white transition-colors group">
+                              <Phone size={13} className="group-hover:text-white transition-colors" />
+                              {p}
+                            </a>
+                          ))
+                        ) : (
+                          <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-2 font-body text-sm text-white/60 hover:text-white transition-colors group">
+                            <Phone size={13} className="group-hover:text-white transition-colors" />
+                            {phone}
+                          </a>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -243,9 +234,9 @@ export function Contact() {
               <div>
                 <p className="font-body font-semibold tracking-widest uppercase text-xs text-white/50 mb-4">Direct Contact</p>
                 <div className="flex flex-col gap-4">
-                  <a href="mailto:hello@expeons.com" className="flex items-center gap-3 font-body text-sm text-white/80 hover:text-white transition-colors group">
-                    <Mail size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />
-                    hello@expeons.com
+                  <a href="mailto:info@expeons.com" className="flex items-center gap-3 font-body text-sm text-white/80 hover:text-white transition-colors group">
+                  <Mail size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />
+                  info@expeons.com
                   </a>
                   <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 font-body text-sm text-white/80 hover:text-white transition-colors group">
                     <ExternalLink size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />

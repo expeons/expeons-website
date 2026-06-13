@@ -19,7 +19,7 @@ const steps = [
     number: '03',
     title: 'Deliver',
     icon: PackageCheck,
-    body: 'Structured deliverables — PFDs, datasheets, simulation files, reports — submitted in the agreed format.',
+    body: 'Structured deliverables — P&IDs, datasheets, simulation files, reports — submitted in the agreed format.',
   },
   {
     number: '04',

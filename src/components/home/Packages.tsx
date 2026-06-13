@@ -15,7 +15,7 @@ const packages: Package[] = [
   {
     name: 'Basic Design',
     tag: 'Feasibility',
-    deliverables: ['PFD', 'Heat & Mass Balance'],
+    deliverables: ['P&ID', 'Heat & Mass Balance'],
     bestFor: 'Feasibility studies and concept work',
   },
   {
@@ -56,19 +56,19 @@ export function Packages() {
         </AnimatedSection>
 
         {/* Cards */}
-        <AnimatedSection stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+        <AnimatedSection stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {packages.map((pkg) => (
             <motion.div
               key={pkg.name}
               variants={animatedItemVariants}
-              className={`rounded-3xl p-6 flex flex-col gap-5 ${
+              className={`rounded-3xl p-6 flex flex-col gap-5 h-full ${
                 pkg.featured
-                  ? 'bg-brand-purple text-white shadow-xl shadow-brand-purple/20 lg:-mt-4 lg:pb-10'
-                  : 'bg-white border border-neutral-200'
+                  ? 'bg-brand-purple text-white shadow-xl shadow-brand-purple/20 lg:-mt-4 lg:py-10'
+                  : 'bg-white shadow-sm'
               }`}
             >
-              <span className={`self-start font-body font-semibold text-xs tracking-wider uppercase px-2.5 py-1 rounded-full ${
-                pkg.featured ? 'bg-white/20 text-white' : 'bg-brand-purple-light text-brand-purple'
+              <span className={`self-start font-body font-bold text-[10px] tracking-widest uppercase ${
+                pkg.featured ? 'text-white/60' : 'text-brand-purple'
               }`}>
                 {pkg.featured ? '★ Most Popular' : pkg.tag}
               </span>

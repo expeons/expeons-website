@@ -80,7 +80,7 @@ export function About() {
                   <motion.div
                     key={value.title}
                     variants={animatedItemVariants}
-                    className="p-5 bg-neutral-50 rounded-3xl border border-neutral-200"
+                    className="p-5 bg-neutral-50 rounded-3xl shadow-sm"
                   >
                     <div className="w-6 h-0.5 bg-brand-purple mb-3" />
                     <h3 className="font-heading font-semibold text-base text-brand-navy mb-2">{value.title}</h3>

@@ -35,8 +35,8 @@ export function CTABand() {
           <p className="mt-6 font-body text-sm text-white/40 flex items-center justify-center gap-2">
             <Mail size={14} />
             Or email us directly at{' '}
-            <a href="mailto:hello@expeons.com" className="text-white/60 hover:text-white transition-colors underline underline-offset-2">
-              hello@expeons.com
+            <a href="mailto:info@expeons.com" className="text-white/60 hover:text-white transition-colors underline underline-offset-2">
+            info@expeons.com
             </a>
           </p>
         </AnimatedSection>

@@ -56,7 +56,7 @@ export function WhyExpeons() {
               <motion.div
                 key={pillar.title}
                 variants={animatedItemVariants}
-                className="bg-white rounded-3xl p-8 border border-neutral-200"
+                className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-5 text-brand-purple">
                   <Icon size={28} />

@@ -49,7 +49,7 @@ export function Insights() {
       </section>
 
       {/* Tag Filter */}
-      <section className="bg-white sticky top-16 lg:top-20 z-30 border-b border-neutral-200">
+      <section className="bg-white sticky top-16 lg:top-20 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 overflow-x-auto">
           <div className="flex gap-2 min-w-max">
             {categories.map((cat) => (
@@ -84,7 +84,7 @@ export function Insights() {
                       <div className="absolute top-4 right-4 opacity-10">
                         <img src="/brand/symbol-white.png" alt="" aria-hidden="true" className="w-40" />
                       </div>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-semibold bg-white/10 text-white border border-white/20 mb-4">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-semibold bg-white/10 text-white mb-4">
                         {featured.category}
                       </span>
                       <h2 className="font-heading font-bold text-2xl lg:text-4xl text-white mb-4 max-w-2xl group-hover:text-brand-violet transition-colors leading-snug">
@@ -109,7 +109,7 @@ export function Insights() {
                         <div className={`rounded-3xl bg-gradient-to-br ${gradients[(i + 1) % gradients.length]} h-44 mb-5 relative overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl`}>
                           <div className="absolute inset-0 bg-black/20" />
                           <div className="absolute bottom-4 left-4">
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-semibold bg-white/10 text-white border border-white/20">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-semibold bg-white/10 text-white">
                               {article.category}
                             </span>
                           </div>

@@ -9,7 +9,7 @@ const stats = [
 
 export function StatsStrip() {
   return (
-    <section className="bg-white border-y border-neutral-200 py-12 lg:py-16">
+    <section className="bg-white py-12 lg:py-16 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimatedSection stagger className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {stats.map((stat) => (

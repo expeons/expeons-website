@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { GitBranch, FileText, Zap, BookOpen, Activity, Shield, ClipboardList, Search } from 'lucide-react';
+import { GitBranch, FileText, BookOpen, Activity, Shield, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AnimatedSection, animatedItemVariants } from '../ui/AnimatedSection';
 import type { LucideIcon } from 'lucide-react';
@@ -11,14 +11,36 @@ interface Service {
 }
 
 const services: Service[] = [
-  { icon: GitBranch, title: 'PFDs & Heat-Mass Balance', description: 'Stream-by-stream process flow and complete mass/energy balance for FEED and basic design.' },
-  { icon: FileText, title: 'Process Datasheets', description: 'Process-side equipment datasheets to ASME/IEC/client templates — no mechanical design.' },
-  { icon: Zap, title: 'Utility Balance', description: 'Steam, cooling water, nitrogen, instrument air, and power consumption estimates.' },
-  { icon: BookOpen, title: 'Design Basis Documents', description: 'Process design basis and narrative documentation covering parameters, standards, and operational philosophy.' },
-  { icon: Activity, title: 'Aspen HYSYS / Plus Simulation', description: 'Steady-state and dynamic simulation for sizing, validation, debottlenecking, and optimization.' },
-  { icon: Shield, title: 'HAZOP & Safety Reviews', description: 'HAZOP participation, worksheet preparation, action tracking, and P&ID mark-up support.' },
-  { icon: ClipboardList, title: 'SOPs & Compliance Docs', description: 'Operating procedures, start-up/shutdown sequences, and compliance documentation.' },
-  { icon: Search, title: 'Technical Bid Evaluations', description: 'Process-side review of vendor quotes and technical submissions with deviation lists.' },
+  { 
+    icon: Activity, 
+    title: 'Process Studies & Simulation', 
+    description: 'Rigorous heat & mass balances, utility summaries, and steady-state/dynamic simulation for plant optimization.' 
+  },
+  { 
+    icon: GitBranch, 
+    title: 'Detailed Engineering Drawings', 
+    description: 'Professional P&IDs, material selection diagrams, and process flow schemes built to international ISO/API standards.' 
+  },
+  { 
+    icon: BookOpen, 
+    title: 'Operational Philosophies', 
+    description: 'Comprehensive design basis, shutdown narratives, and control philosophies that set the project governing rules.' 
+  },
+  { 
+    icon: Shield, 
+    title: 'Safety & Relief Systems', 
+    description: 'Expert HAZOP support, flare depressurization studies, and relief valve sizing for zero-compromise safety.' 
+  },
+  { 
+    icon: FileText, 
+    title: 'Equipment Design & Specs', 
+    description: 'Precise process-side datasheets and heat exchanger design ensuring accurate vendor procurement.' 
+  },
+  { 
+    icon: Search, 
+    title: 'Vendor Review & Procurement', 
+    description: 'In-depth technical bid evaluations and vendor document reviews to eliminate project technical risk.' 
+  },
 ];
 
 export function Services() {
@@ -29,15 +51,15 @@ export function Services() {
         <AnimatedSection className="text-center mb-12 lg:mb-16">
           <p className="font-body font-semibold tracking-widest uppercase text-xs text-brand-purple mb-4">What We Do</p>
           <h2 className="font-heading font-bold text-3xl lg:text-5xl text-brand-navy mb-5">
-            Every deliverable, <em className="not-italic text-brand-purple">engineered with precision.</em>
+            Engineering solutions, <em className="not-italic text-brand-purple">delivered with expertise.</em>
           </h2>
           <p className="font-body text-base lg:text-lg text-neutral-500 max-w-2xl mx-auto leading-relaxed">
-            We provide specialized process-only engineering services, structured around EPC project workflows and international standards.
+            We provide specialized process engineering support across the full project lifecycle, from conceptual design to detailed execution.
           </p>
         </AnimatedSection>
 
         {/* Grid */}
-        <AnimatedSection stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <AnimatedSection stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => {
             const Icon = service.icon;
             return (
@@ -45,7 +67,7 @@ export function Services() {
                 key={service.title}
                 variants={animatedItemVariants}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group bg-white border border-neutral-200 rounded-3xl p-6 cursor-pointer hover:shadow-lg hover:border-l-2 hover:border-l-brand-purple transition-all duration-200"
+                className="group bg-white rounded-3xl p-6 cursor-pointer hover:shadow-xl hover:border-l-2 hover:border-l-brand-purple transition-all duration-200 shadow-sm"
               >
                 <div className="mb-4 text-brand-purple">
                   <Icon size={28} />

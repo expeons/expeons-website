@@ -30,7 +30,7 @@ export function Home() {
             "contactPoint": {
               "@type": "ContactPoint",
               "contactType": "customer service",
-              "email": "contact@expeons.com"
+              "email": "info@expeons.com"
             }
           })}
         </script>
