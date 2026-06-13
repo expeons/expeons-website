@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Mail, CheckCircle2, AlertCircle, ExternalLink, ChevronDown, Loader2, Phone } from 'lucide-react';
+import { Mail, CheckCircle2, AlertCircle, Linkedin, ChevronDown, Loader2, Phone } from 'lucide-react';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 
 const schema = z.object({
@@ -238,8 +238,8 @@ export function Contact() {
                   <Mail size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />
                   info@expeons.com
                   </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 font-body text-sm text-white/80 hover:text-white transition-colors group">
-                    <ExternalLink size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />
+                  <a href="https://www.linkedin.com/company/expeonsengineering/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 font-body text-sm text-white/80 hover:text-white transition-colors group">
+                    <Linkedin size={16} className="text-white/50 flex-shrink-0 group-hover:text-white transition-colors" />
                     Connect on LinkedIn
                   </a>
                 </div>
