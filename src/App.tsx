@@ -13,7 +13,7 @@ import { Contact } from './pages/Contact';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsAndConditions } from './pages/TermsAndConditions';
 
-const TRACKING_ID = import.meta.env.VITE_GA_ID;
+const TRACKING_ID = 'G-GMP14XTGSG'; // Hardcoded so we don't have to deal with Vite env variables!
 if (TRACKING_ID) {
   ReactGA.initialize(TRACKING_ID);
 }
