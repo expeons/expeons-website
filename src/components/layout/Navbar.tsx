@@ -51,7 +51,7 @@ export function Navbar() {
           : 'bg-white/90 backdrop-blur-md shadow-sm border-b border-neutral-100'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16 lg:h-20">
+      <nav className="w-full px-6 lg:px-12 flex items-center justify-between h-16 lg:h-20">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
           <img
@@ -116,7 +116,7 @@ export function Navbar() {
             transition={{ duration: 0.25 }}
             className="lg:hidden bg-white border-t border-neutral-100 overflow-hidden"
           >
-            <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
+            <div className="w-full px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => {
                 const active = location.pathname === link.href;
                 return (
