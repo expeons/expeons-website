@@ -27,11 +27,21 @@ export function Contact() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (_data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setError('');
     try {
-      // In production, POST to /api/contact
-      await new Promise((r) => setTimeout(r, 800));
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
       setSubmitted(true);
     } catch {
       setError('Something went wrong. Please try again or email us directly.');
