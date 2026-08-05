@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import ReactGA from 'react-ga4';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -11,6 +13,10 @@ import { Contact } from './pages/Contact';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsAndConditions } from './pages/TermsAndConditions';
 
+const TRACKING_ID = import.meta.env.VITE_GA_ID;
+if (TRACKING_ID) {
+  ReactGA.initialize(TRACKING_ID);
+}
 
 const pageVariants = {
   initial: { opacity: 0, y: 10 },
@@ -20,6 +26,13 @@ const pageVariants = {
 
 function AnimatedRoutes() {
   const location = useLocation();
+
+  useEffect(() => {
+    if (TRACKING_ID) {
+      ReactGA.send({ hitType: 'pageview', page: location.pathname + location.search });
+    }
+  }, [location]);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
