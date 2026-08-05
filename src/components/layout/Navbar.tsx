@@ -41,14 +41,14 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-4 left-4 right-4 lg:top-6 lg:left-8 lg:right-8 z-50 rounded-2xl transition-all duration-500 ${
         shouldHideNavbar
-          ? 'opacity-0 pointer-events-none -translate-y-10'
+          ? 'opacity-0 pointer-events-none -translate-y-14'
           : 'opacity-100 pointer-events-auto'
       } ${
         transparent
-          ? 'bg-transparent'
-          : 'bg-white/90 backdrop-blur-md shadow-sm border-b border-neutral-100'
+          ? 'bg-transparent border border-transparent'
+          : 'bg-white/90 backdrop-blur-md shadow-lg border border-neutral-200/50'
       }`}
     >
       <nav className="w-full px-6 lg:px-12 flex items-center justify-between h-16 lg:h-20">
@@ -114,7 +114,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-white border-t border-neutral-100 overflow-hidden"
+            className="lg:hidden bg-white border-t border-neutral-100 overflow-hidden rounded-b-2xl"
           >
             <div className="w-full px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => {
